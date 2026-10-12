@@ -24,8 +24,10 @@ jobs:
         with:
           gradle-version: '8.14.3'
       - name: Build mod
-      - name: Extract project
-        run: unzip -o FROST-Fabric-1.21.11-build-ready.zip -d project
+      - name: Build FROST
+        run: |
+          find project -name settings.gradle -exec dirname {} \; > project_dir.txt
+          gradle --no-daemon -p "$(head -n 1 project_dir.txt)" clean build
         run: gradle --no-daemon clean build
       - name: Upload JAR
         uses: actions/upload-artifact@v4
